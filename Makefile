@@ -40,7 +40,7 @@ build:
 
 # Run server using docker
 .PHONY: run-server
-run-server:
+run-server: create-network
 	$(DOCKER_COMPOSE) -f build/docker-compose-app.yml up
 
 # Run server locally
@@ -100,7 +100,7 @@ create-migration:
 
 # Start dependencies (database)
 .PHONY: up-dependencies
-up-dependencies:
+up-dependencies: create-network
 	@$(DOCKER_COMPOSE) -f build/docker-compose-db.yml up -d
 
 # Stop dependencies (database)

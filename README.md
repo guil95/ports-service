@@ -51,7 +51,7 @@ make build
 make up-dependencies
 make migrate-up
 make create-network
-make run-import FILE=input/file.json
+make run-import FILE=input/ports.json
 ```
 *Note*: Ensure that the file you want to import is placed inside the /input directory.
 
@@ -69,7 +69,7 @@ To run imports locally using the Go CLI, follow these steps:
 ```bash
 make up-dependencies
 make migrate-up
-make run-import-locally FILE=input/file.json
+make run-import-locally FILE=input/ports.json
 ```
 
 *Note*: Ensure that the file you want to import is placed inside the /input directory.
@@ -124,6 +124,34 @@ Additional commands check the Makefile
 `reponses`: `200 OK` or `500 internal server error` 
 *Note*: This API return 200 because this endpoint save or update if this port already exists
 
+### Curl
+```
+curl --request POST \
+  --url http://localhost:8080/ports \
+  --header 'content-type: application/json' \
+  --data '{
+    "name": "saas",
+    "city": "Changshu",
+    "province": "Jiangsu",
+    "country": "China",
+    "alias": [
+      "Zhangjiagang",
+      "Suzhou",
+      "Taicang"
+    ],
+    "regions": [],
+    "coordinates": [
+      120.752503,
+      31.653686
+    ],
+    "timezone": "Asia/Shanghai",
+    "unlocs": [
+      "CNCGa"
+    ],
+    "code": "57076"
+  }'
+```
+
 ### GET by ID
 `GET`: `localhost:8080/ports/{port_id}`
 
@@ -152,7 +180,13 @@ Additional commands check the Makefile
   "code": "57076"
 }
 ```
+
 `http codes`: `200 OK`, `500 internal server error` or `404 not found`
+
+``` 
+curl --request GET \
+--url http://localhost:8080/ports/CNCGa
+```
 *Note*: The API use the unloc code as ID for the elements
 
 ## Architecture Overview

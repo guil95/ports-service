@@ -183,11 +183,13 @@ curl --request POST \
 
 `http codes`: `200 OK`, `500 internal server error` or `404 not found`
 
+*Note*: The API use the unloc code as ID for the elements
+
+### Curl
 ``` 
 curl --request GET \
 --url http://localhost:8080/ports/CNCGa
 ```
-*Note*: The API use the unloc code as ID for the elements
 
 ## Architecture Overview
 This project follows a hybrid approach, combining elements of **Clean Architecture** and **Hexagonal Architecture** to achieve a highly modular, maintainable, and scalable design. By structuring the code into well-defined layers—**Domain, Application, and Infrastructure**—we ensure a clear separation of concerns and strict dependency inversion.

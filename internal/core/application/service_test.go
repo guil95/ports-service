@@ -114,30 +114,33 @@ func TestService(t *testing.T) {
 
 func TestImports(t *testing.T) {
 	t.Run("import with success", func(t *testing.T) {
-		importData := []domain.Port{{
-			Name:        "China",
-			City:        "Changshu",
-			Country:     "China",
-			Alias:       []string{"Zhangjiagang", "Suzhou", "Taicang"},
-			Regions:     []string{"Region1", "Region2"},
-			Coordinates: []float64{120.752503, 31.653686},
-			Province:    "Jiangsu",
-			Timezone:    "Asia/Shanghai",
-			Unlocs:      []string{"CNCGU"},
-			Code:        "57076",
-		}, {
-			Name:        "China",
-			City:        "Changshu",
-			Country:     "China",
-			Alias:       []string{"Zhangjiagang", "Suzhou", "Taicang"},
-			Regions:     []string{"Region1", "Region2"},
-			Coordinates: []float64{120.752503, 31.653686},
-			Province:    "Jiangsu",
-			Timezone:    "Asia/Shanghai",
-			Unlocs:      []string{"CNCGU"},
-			Code:        "57076",
-		},
+		importData := []domain.Port{
+			{
+				Name:        "China",
+				City:        "Changshu",
+				Country:     "China",
+				Alias:       []string{"Zhangjiagang", "Suzhou", "Taicang"},
+				Regions:     []string{"Region1", "Region2"},
+				Coordinates: []float64{120.752503, 31.653686},
+				Province:    "Jiangsu",
+				Timezone:    "Asia/Shanghai",
+				Unlocs:      []string{"CNCGU"},
+				Code:        "57076",
+			},
+			{
+				Name:        "China",
+				City:        "Changshu",
+				Country:     "China",
+				Alias:       []string{"Zhangjiagang", "Suzhou", "Taicang"},
+				Regions:     []string{"Region1", "Region2"},
+				Coordinates: []float64{120.752503, 31.653686},
+				Province:    "Jiangsu",
+				Timezone:    "Asia/Shanghai",
+				Unlocs:      []string{"CNCGU"},
+				Code:        "57076",
+			},
 		}
+
 		ctx := context.Background()
 		repoMock := &mocks.RepositoryPort{}
 		parserMock := &mocks.ParserPort{}
@@ -163,54 +166,24 @@ func TestImports(t *testing.T) {
 		err := service.ImportPorts(ctx)
 		assert.NoError(t, err)
 	})
+
 	t.Run("import with error", func(t *testing.T) {
-		importData := []domain.Port{{
-			Name:        "China",
-			City:        "Changshu",
-			Country:     "China",
-			Alias:       []string{"Zhangjiagang", "Suzhou", "Taicang"},
-			Regions:     []string{"Region1", "Region2"},
-			Coordinates: []float64{120.752503, 31.653686},
-			Province:    "Jiangsu",
-			Timezone:    "Asia/Shanghai",
-			Unlocs:      []string{"CNCGU"},
-			Code:        "57076",
-		}, {
-			Name:        "China",
-			City:        "Changshu",
-			Country:     "China",
-			Alias:       []string{"Zhangjiagang", "Suzhou", "Taicang"},
-			Regions:     []string{"Region1", "Region2"},
-			Coordinates: []float64{120.752503, 31.653686},
-			Province:    "Jiangsu",
-			Timezone:    "Asia/Shanghai",
-			Unlocs:      []string{"CNCGU"},
-			Code:        "57076",
-		},
-		}
 		ctx := context.Background()
 		repoMock := &mocks.RepositoryPort{}
 		parserMock := &mocks.ParserPort{}
 
-		portCh := make(chan domain.Port, len(importData))
+		portCh := make(chan domain.Port, 1)
 		errCh := make(chan error, 1)
 		parseError := errors.New("internal error")
-		for _, port := range importData {
-			portCh <- port
-		}
-		close(portCh)
-		errCh <- parseError
-		close(errCh)
 
-		batchToSave := importData
-		batchToSave[0].ID = importData[0].ID
-		batchToSave[1].ID = importData[1].ID
+		defer close(portCh)
+		defer close(errCh)
+		errCh <- parseError
 
 		parserMock.On("Parse", ctx).Return((<-chan domain.Port)(portCh), (<-chan error)(errCh))
-		repoMock.On("SaveBulk", ctx, batchToSave).Return(nil).Times(1)
 
-		s := NewService(repoMock, parserMock)
-		err := s.ImportPorts(ctx)
+		service := NewService(repoMock, parserMock)
+		err := service.ImportPorts(ctx)
 		assert.Error(t, err)
 		assert.ErrorIs(t, err, parseError)
 	})

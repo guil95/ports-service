@@ -4,6 +4,7 @@ This service allow users to import ports and create/update it
 ## Prerequisites
 
 - Docker (for Docker-based setup)
+- docker-compose
 - Go (for local setup)
 - Make
 

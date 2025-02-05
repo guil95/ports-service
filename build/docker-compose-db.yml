@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ports_postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ports_db
+    ports:
+      - '5432:5432'
+    networks:
+      - ports_service
+
+volumes:
+  postgres_data:
+
+networks:
+  ports_service:
+    external: true

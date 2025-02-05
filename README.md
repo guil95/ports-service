@@ -18,6 +18,7 @@ To run the server using Docker, follow these steps:
 make build
 make up-dependencies
 make migrate-up
+make create-network
 make run-server
 ```
 This will:
@@ -49,6 +50,7 @@ To run imports using Docker, follow these steps:
 make build
 make up-dependencies
 make migrate-up
+make create-network
 make run-import FILE=input/file.json
 ```
 *Note*: Ensure that the file you want to import is placed inside the /input directory.

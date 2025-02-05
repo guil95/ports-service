@@ -7,6 +7,7 @@ CONTAINER_NAME = ports-service-container
 CONTAINER_SERVER_NAME = ports-service-container-server
 NETWORK = ports_service
 APP_DIR=$(shell pwd)
+DOCKER_COMPOSE := $(shell command -v docker-compose 2> /dev/null || echo "docker compose")
 
 # Default target
 .PHONY: help
@@ -40,7 +41,7 @@ build:
 # Run server using docker
 .PHONY: run-server
 run-server:
-	@docker-compose -f build/docker-compose-app.yml up
+	$(DOCKER_COMPOSE) -f build/docker-compose-app.yml up
 
 # Run server locally
 .PHONY: run-server-locally
@@ -100,12 +101,12 @@ create-migration:
 # Start dependencies (database)
 .PHONY: up-dependencies
 up-dependencies:
-	@docker-compose -f build/docker-compose-db.yml up -d
+	@$(DOCKER_COMPOSE) -f build/docker-compose-db.yml up -d
 
 # Stop dependencies (database)
 .PHONY: down-dependencies
 down-dependencies:
-	@docker-compose -f build/docker-compose-db.yml down -v
+	@$(DOCKER_COMPOSE) -f build/docker-compose-db.yml down -v
 
 ## Generate mocks
 .PHONY: mock-generate

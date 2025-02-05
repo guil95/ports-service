@@ -164,6 +164,7 @@ This project follows a hybrid approach, combining elements of **Clean Architectu
 By leveraging these principles, the project achieves a strong balance between flexibility and maintainability, providing a solid foundation for evolving business needs and technological advancements.
 
 ## Project Structure
+``` 
 ├── build
 │   ├── docker-compose-app.yml
 │   └── docker-compose-db.yml
@@ -220,6 +221,7 @@ By leveraging these principles, the project achieves a strong balance between fl
 └── tests
     └── suite
         └── postgrescontainer.go
+```
 
 ### `build/`
 Contains Docker Compose files for setting up the application and the database.

@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"strings"
 
@@ -66,6 +67,12 @@ func (s *service) ImportPorts(ctx context.Context) error {
 
 		case err, ok := <-errCh:
 			if ok && err != nil {
+				if len(batch) > 0 {
+					// Save items that remains on the batch
+					if saveErr := s.repo.SaveBulk(ctx, batch); saveErr != nil {
+						return fmt.Errorf("error to save batch: %v; error: %w", saveErr, err)
+					}
+				}
 				return err
 			}
 		}

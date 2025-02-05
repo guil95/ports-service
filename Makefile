@@ -116,10 +116,12 @@ mock-generate:
 
 .PHONY: integration-tests
 integration-tests:
+	@echo "Running integration tests..."
 	@go test -count=1 -tags=integration -v ./... | grep -v "\[no test files\]"
 
 .PHONY: unit-tests
 unit-tests:
+	@echo "Running unit tests..."
 	@go test -count=1 -tags=unit -v ./... | grep -v "\[no test files\]"
 
 .PHONY: tests

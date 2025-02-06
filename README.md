@@ -15,31 +15,32 @@ This service allow users to import ports and create/update it
 To run the server using Docker, follow these steps:
 
 ```bash
+make create-network
 make build
 make up-dependencies
 make migrate-up
-make create-network
 make run-server
 ```
 This will:
-
-1 - Build the Docker image.
-2 - Set up the database.
-3 - Run migrations.
-4 - Start the server on port 8080.
+  - Create a network
+  - Build the Docker image.
+  - Set up the database.
+  - Run migrations.
+  - Start the server on port 8080.
 
 ### Locally
 To run the server locally using the Go CLI, follow these steps:
 ```bash
+make create-network
 make up-dependencies
 make migrate-up
 make run-server-locally
 ```
 This will:
-
-1 - Set up the database.
-2 - Run migrations.
-3 - Start the server locally on port 8080.
+  - Create a network
+  - Set up the database.
+  - Run migrations.
+  - Start the server locally on port 8080.
 
 ## Running Imports
 
@@ -47,26 +48,27 @@ This will:
 
 To run imports using Docker, follow these steps:
 ```bash
+make create-network
 make build
 make up-dependencies
 make migrate-up
-make create-network
 make run-import FILE=input/ports.json
 ```
 *Note*: Ensure that the file you want to import is placed inside the /input directory.
 
 This will:
-
-1 - Build the Docker image.
-2 - Set up the database.
-3 - Run migrations.
-4 - Execute the import process using the specified JSON file.
+  - Create a network
+  - Build the Docker image.
+  - Set up the database.
+  - Run migrations.
+  - Execute the import process using the specified JSON file.
 
 ### Locally
 
 To run imports locally using the Go CLI, follow these steps:
 
 ```bash
+make create-network
 make up-dependencies
 make migrate-up
 make run-import-locally FILE=input/ports.json
@@ -75,10 +77,10 @@ make run-import-locally FILE=input/ports.json
 *Note*: Ensure that the file you want to import is placed inside the /input directory.
 
 This will:
-
-1 - Set up the database.
-2 - Run migrations.
-3 - Execute the import process locally using the specified JSON file.
+  - Create network
+  - Set up the database.
+  - Run migrations.
+  - Execute the import process locally using the specified JSON file.
 
 
 ### Utilities commands

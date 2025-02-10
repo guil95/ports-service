@@ -18,21 +18,21 @@ func NewHTTPHandler(portService domain.ServicePort) *HTTPHandler {
 }
 
 func (h *HTTPHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if strings.HasPrefix(r.URL.Path, "/ports/") {
+	switch {
+	case strings.HasPrefix(r.URL.Path, "/ports/"):
 		id := strings.TrimPrefix(r.URL.Path, "/ports/")
-		if id != "" {
-			switch r.Method {
-			case http.MethodGet:
-				h.getPort(w, r, id)
-			default:
-				writeResponse(w, http.StatusMethodNotAllowed, nil, methodNotAllowed)
-			}
+		if id == "" {
+			writeResponse(w, http.StatusBadRequest, nil, methodNotAllowed)
 			return
 		}
-	}
 
-	switch r.URL.Path {
-	case "/ports":
+		switch r.Method {
+		case http.MethodGet:
+			h.getPort(w, r, id)
+		default:
+			writeResponse(w, http.StatusMethodNotAllowed, nil, methodNotAllowed)
+		}
+	case r.URL.Path == "/ports":
 		switch r.Method {
 		case http.MethodPost:
 			h.createPort(w, r)

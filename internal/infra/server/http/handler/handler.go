@@ -4,44 +4,27 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
-	"strings"
 
 	"github.com/guil95/ports-service/internal/core/domain"
 )
 
 type HTTPHandler struct {
 	portService domain.ServicePort
+	mux         *http.ServeMux
 }
 
 func NewHTTPHandler(portService domain.ServicePort) *HTTPHandler {
-	return &HTTPHandler{portService: portService}
+	h := &HTTPHandler{portService: portService}
+	h.mux = http.NewServeMux()
+
+	h.mux.HandleFunc("GET /ports/{id}", h.getPort)
+	h.mux.HandleFunc("POST /ports", h.createPort)
+
+	return h
 }
 
 func (h *HTTPHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch {
-	case strings.HasPrefix(r.URL.Path, "/ports/"):
-		id := strings.TrimPrefix(r.URL.Path, "/ports/")
-		if id == "" {
-			writeResponse(w, http.StatusBadRequest, nil, methodNotAllowed)
-			return
-		}
-
-		switch r.Method {
-		case http.MethodGet:
-			h.getPort(w, r, id)
-		default:
-			writeResponse(w, http.StatusMethodNotAllowed, nil, methodNotAllowed)
-		}
-	case r.URL.Path == "/ports":
-		switch r.Method {
-		case http.MethodPost:
-			h.createPort(w, r)
-		default:
-			writeResponse(w, http.StatusMethodNotAllowed, nil, methodNotAllowed)
-		}
-	default:
-		writeResponse(w, http.StatusNotFound, nil, notFound)
-	}
+	h.mux.ServeHTTP(w, r)
 }
 
 func (h *HTTPHandler) createPort(w http.ResponseWriter, r *http.Request) {
@@ -65,7 +48,8 @@ func (h *HTTPHandler) createPort(w http.ResponseWriter, r *http.Request) {
 	writeResponse(w, http.StatusOK, nil, nil)
 }
 
-func (h *HTTPHandler) getPort(w http.ResponseWriter, r *http.Request, id string) {
+func (h *HTTPHandler) getPort(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
 	if id == "" {
 		writeResponse(w, http.StatusBadRequest, nil, missingIDParameter)
 		return
@@ -93,7 +77,6 @@ func writeResponse(w http.ResponseWriter, statusCode int, data interface{}, err 
 		if encoderError != nil {
 			return
 		}
-
 		return
 	}
 

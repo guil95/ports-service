@@ -253,11 +253,10 @@ By leveraging these principles, the project achieves a strong balance between fl
 │   ├── parser_port.go
 │   ├── repository_port.go
 │   └── service_port.go
-├── pkg
-│   ├── database
-│   │   └── postgres.go
-│   └── graceful
-│       └── shutdown.go
+├── database
+│    └── postgres.go
+├── graceful
+│    └── shutdown.go
 ├── README.md
 └── tests
     └── suite
@@ -333,11 +332,12 @@ Stores mock implementations for unit testing.
 - **`repository_port.go`**: Mock for the repository.
 - **`service_port.go`**: Mock for the service.
 
-### `pkg/`
-Reusable utilities and libraries.
-- **`database/`**: Database-related utilities.
+### `database/`
+Database-related utilities.
     - `postgres.go`: Provides PostgreSQL connection management.
-- **`graceful/`**: Handles graceful shutdown of the application.
+
+### `graceful/`
+Handles graceful shutdown of the application.
     - `shutdown.go`: Implements clean shutdown logic.
 
 ### `README.md`

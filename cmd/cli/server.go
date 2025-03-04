@@ -2,11 +2,11 @@ package cli
 
 import (
 	"errors"
+	"github.com/guil95/ports-service/database"
+	"github.com/guil95/ports-service/graceful"
 	"github.com/guil95/ports-service/internal/core/application"
 	"github.com/guil95/ports-service/internal/infra/adapters/repository"
 	"github.com/guil95/ports-service/internal/infra/server/http/handler"
-	"github.com/guil95/ports-service/pkg/database"
-	"github.com/guil95/ports-service/pkg/graceful"
 	"github.com/spf13/cobra"
 	"log/slog"
 	"net/http"

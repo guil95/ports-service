@@ -3,14 +3,14 @@ package cli
 import (
 	"context"
 	"fmt"
-	"github.com/guil95/ports-service/pkg/database"
+	"github.com/guil95/ports-service/database"
+	"github.com/guil95/ports-service/graceful"
 	"log/slog"
 	"os"
 
 	"github.com/guil95/ports-service/internal/core/application"
 	"github.com/guil95/ports-service/internal/infra/adapters/parser"
 	"github.com/guil95/ports-service/internal/infra/adapters/repository"
-	"github.com/guil95/ports-service/pkg/graceful"
 	"github.com/spf13/cobra"
 )
 
